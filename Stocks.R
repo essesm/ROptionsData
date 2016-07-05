@@ -38,12 +38,14 @@ GetAnnualDividends <- Vectorize(function(symbol)
     dividend
 }, 'symbol')
 
-# Update stock data. The input csv file must have a column labeled 'Symbol'.
+# Update stock data. The input csv file must have a column labeled 'Symbol'. If
+# the same symbol appears more than once, this function will remove duplicates.
 # The output file is by default the same as the input file, unless the output
 # file is specified.
 UpdateStocks <- function(input, output = input)
 {
     stock.list <- read.csv(input, stringsAsFactors = FALSE)
+    stock.list <- stock.list[!duplicated(stock.list[,'Symbol']),]
     stock.quotes <- getQuote(stock.list[['Symbol']])
 
     stock.quotes['Annual Dividend'] <- GetAnnualDividends(rownames(stock.quotes))
