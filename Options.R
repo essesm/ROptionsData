@@ -31,11 +31,18 @@ GetOptionChain <- function(symbol, type, expiration.date)
     risk.free.rate <- 0.05
     maturity <- (as.numeric(as.Date(expiration.date) - Sys.Date())) / 365
 
-    # Sometimes calculating implied volatility breaks.
-    # This helps prevent its calculation from breaking.
+    # There is no way a put option can have a value less than the strike
+    # minus the underlying. So this calculation adjusts the value.
     option.chain[['Ask']] <- ifelse(option.chain[['Strike']] - underlying > option.chain[['Ask']],
-                  option.chain[['Strike']] - underlying,
+                  option.chain[['Strike']] - underlying + 0.01,
                   option.chain[['Ask']])
+
+    print(symbol)
+    # Use the following three lines to debug when the
+    # implied volatility cannot be calculated correctly.
+    # option.chain <- head(option.chain)
+    # print(GetPrice(symbol))
+    # print(option.chain)
 
     EuropeanOptionImpliedVolatility <- Vectorize(EuropeanOptionImpliedVolatility, c('value', 'strike'))
     option.chain['Implied Volatility'] <- EuropeanOptionImpliedVolatility(
