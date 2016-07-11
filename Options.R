@@ -102,6 +102,7 @@ GetOption <- Vectorize(function(symbol, type, expiration.date, delta)
 UpdateOptions <- function(input, output = input)
 {
     options <- read.csv(input, stringsAsFactors = FALSE)
+    options['Expiration'] <- as.Date(options[['Expiration']], format = "%m/%d/%Y")
     options <- GetOption(t(options['Symbol']), 'put', t(options['Expiration']), -0.25)
 
     # Calculate statistics like discount, premium, and yield
