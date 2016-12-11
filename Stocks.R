@@ -48,9 +48,11 @@ UpdateStocks <- function(input, output = input)
     stock.list <- stock.list[!duplicated(stock.list[,'Symbol']),]
     stock.quotes <- getQuote(stock.list[['Symbol']])
 
+    # Calculate statistics that getQuotes doesn't provide
     stock.quotes['Annual Dividend'] <- GetAnnualDividends(rownames(stock.quotes))
     stock.quotes['Dividend Yield'] <- stock.quotes['Annual Dividend'] / stock.quotes['Last']
-    stock.quotes <- cbind(Symbol = rownames(stock.quotes), stock.quotes)
+
+    stock.quotes <- cbind(stock.list, stock.quotes)
 
     write.csv(stock.quotes, file = output, row.names = FALSE)
 }
