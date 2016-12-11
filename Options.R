@@ -96,14 +96,14 @@ GetOption <- Vectorize(function(symbol, type, expiration.date, delta)
 }, c("symbol", "expiration.date"))
 
 # Update option data. This will output the put options with a delta closest to
-# -0.25. The input csv file must have a column labeled 'Symbol' and a column
-# labeled 'Expiration'. The output file is by default the same as the input
-# file, unless the output file is specified.
-UpdateOptions <- function(input, output = input)
+# to the input delta. The input csv file must have a column labeled 'Symbol'
+# and a column labeled 'Expiration'. The output file is by default the same as
+# the input file, unless the output file is specified.
+UpdateOptions <- function(delta, input, output = input)
 {
     options <- read.csv(input, stringsAsFactors = FALSE)
     options['Expiration'] <- as.Date(options[['Expiration']], format = "%m/%d/%Y")
-    options <- GetOption(t(options['Symbol']), 'put', t(options['Expiration']), -0.25)
+    options <- GetOption(t(options['Symbol']), 'put', t(options['Expiration']), delta)
 
     # Calculate statistics like discount, premium, and yield
     discount <- 1 - unlist(options['Strike',]) / unlist(GetPrice(options['Symbol',]))
