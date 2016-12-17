@@ -1,5 +1,6 @@
 library(tools)
 source('Stocks.R')
+source('Summary.R')
 
 args = commandArgs(trailingOnly = TRUE)
 if (length(args) == 0)
@@ -10,3 +11,4 @@ if (length(args) == 0)
 input = args[1]
 output = paste(file_path_sans_ext(input), ".out.", file_ext(input), sep = "")
 UpdateStocks(input, output)
+GetResults(output)
