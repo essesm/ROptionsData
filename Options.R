@@ -32,7 +32,9 @@ GetOptionChain <- function(symbol, type, expiration.date)
     maturity <- (as.numeric(as.Date(expiration.date) - Sys.Date())) / 365
 
     # There is no way a put option can have a value less than the strike
-    # minus the underlying. So this calculation adjusts the value.
+    # minus the underlying, but sometimes the source used in getOptionChain
+    # is not up to date. This calculation adjusts the Ask so implied volatility
+    # calculations are possible.
     option.chain[['Ask']] <- ifelse(option.chain[['Strike']] - underlying > option.chain[['Ask']],
                   option.chain[['Strike']] - underlying + 0.01,
                   option.chain[['Ask']])
