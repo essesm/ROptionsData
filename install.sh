@@ -1,4 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env Rscript
 
-REPO=${1:-'http://cran.us.r-project.org'}
-Rscript install_packages.R $REPO
+args = commandArgs(trailingOnly = TRUE)
+repo <- ifelse(length(args), args[1], 'http://cran.us.r-project.org')
+
+install.packages('quantmod', repo = repo)
+install.packages('RQuantLib', repo = repo)
+install.packages('jsonlite', repo = repo)
+install.packages('curl', repo = repo)
