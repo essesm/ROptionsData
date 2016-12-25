@@ -1,6 +1,6 @@
 library(quantmod)
 library(RQuantLib)
-source('Stocks.R')
+source('../modules/Stocks.R')
 
 # This Options module provides basic functionality for retrieving option
 # chains. It can also determine the option call or put closest to the provided
