@@ -13,7 +13,7 @@ DATE=`date -d"$DATE" '+%Y%m%d'`
 
 RECIPIENTS=$1
 INPUT=$2
-OUTPUT=${3:-"output.$DATE.csv"}
-
+OUTPUT=${3:-"${INPUT%.*}.$DATE.csv"}
 touch $OUTPUT
+
 Rscript get_Options_closest_to_Delta.R $DATE -0.25 $INPUT $OUTPUT |&  mail -s "Options for $DATE" $RECIPIENTS -A $OUTPUT
