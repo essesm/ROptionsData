@@ -2,10 +2,9 @@
 
 ## Synopsis
 
-ROptionsData uses R to aggregate helpful data about Options. Currently, the
-Options module supports backing out strike prices for options closest to a
-given delta. In general, you can use [get_Prices.R](get_Prices.R) at a later
-date to backtest the results.
+ROptionsData uses R to aggregate helpful data about Options. Currently, you can
+get an Option whose value for a specified key is closest to your input. For
+example, you can retrieve the put that has a delta closest to -0.25.
 
 ## Dependencies
 
@@ -16,19 +15,16 @@ All modules in this repository require the following R packages:
 * curl
 
 Packages can be installed via `install.packages('<PACKAGE_NAME>')` and are case
-sensitive. Alternatively, there is a wrapper shell script
+sensitive. Alternatively, there is a wrapper shell script 
 [install.sh](install.sh) that, if run as root, will automatically download and
 install the necessary packages from the repo you specify. You may omit the
 repository to use a default.
 
 ## Example
 
-Please refer to [input.csv](input.csv) for properly formatted input files or run
-[this script](run.R).
-
-Dates in the input file must be in the format MM/dd/yyyy.
+A sample list of symbols can be found in [input.csv](input.csv).
 
 ```R
-UpdateStocks('input.csv', 'stock_output.csv')
-UpdateOptions('input.csv', 'options_output.csv')
+# Get the AAPL put with Delta closest to -0.25
+option <- GetOption('AAPL', 'put', expiration.date, 'Delta', -0.25)
 ```

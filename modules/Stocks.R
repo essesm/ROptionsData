@@ -7,11 +7,11 @@ library(quantmod)
 # In addition, this module can write stock information to a csv file provided
 # the input csv file has a column labeled 'Symbol'.
 
-# Get the price of the stock
-GetPrice <- Vectorize(function(symbol)
+# Get the last price of the stock
+GetPrice <-  function(symbol)
 {
     getQuote(symbol)[['Last']]
-}, 'symbol')
+}
 
 # Get the dividend yield of the stock
 GetDividendYield <- function(symbol)
@@ -38,21 +38,11 @@ GetAnnualDividends <- Vectorize(function(symbol)
     dividend
 }, 'symbol')
 
-# Update stock data. The input csv file must have a column labeled 'Symbol'. If
-# the same symbol appears more than once, this function will remove duplicates.
-# The output file is by default the same as the input file, unless the output
-# file is specified.
-UpdateStocks <- function(input, output = input)
+GetStock <- function(symbol)
 {
-    stock.list <- read.csv(input, stringsAsFactors = FALSE)
-    stock.list <- stock.list[!duplicated(stock.list[,'Symbol']),]
-    stock.quotes <- getQuote(stock.list[['Symbol']])
+    stock <- getQuote(symbol)
+    stock[['Annual Dividend']] <- GetAnnualDividends(symbol)
+    stock[['Dividend Yield']] <- GetDividendYield(symbol)
 
-    # Calculate statistics that getQuotes doesn't provide
-    stock.quotes['Annual Dividend'] <- GetAnnualDividends(rownames(stock.quotes))
-    stock.quotes['Dividend Yield'] <- stock.quotes['Annual Dividend'] / stock.quotes['Last']
-
-    stock.quotes <- cbind(stock.list, stock.quotes)
-
-    write.csv(stock.quotes, file = output, row.names = FALSE)
+    stock
 }
