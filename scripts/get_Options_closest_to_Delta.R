@@ -25,7 +25,9 @@ data <- read.csv(input, stringsAsFactors = FALSE)
 results <- NULL
 for (symbol in data[['Symbol']])
 {
-    try(results <- rbind(results, GetOption(symbol, 'put', date, 'Delta', delta)))
+    tryCatch(results <- rbind(results, GetOption(symbol, 'put', date, 'Delta', delta)),
+             error = function(e) { print(paste(symbol, e)) }
+             )
 }
 
 write.csv(merge(data, results), file = output, row.names = FALSE)
