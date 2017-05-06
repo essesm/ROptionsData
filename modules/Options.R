@@ -26,7 +26,7 @@ GetOptionChain <- function(symbol, type, expiration.date)
     }
     else
     {
-        stop(paste('invalid option type: ', type, ', use \'puts\' or \'calls\''))
+        stop(paste('invalid option type: ', type, ', use \'put\' or \'call\''))
     }
 
     days.until.expiration <- as.numeric(expiration.date - Sys.Date())
